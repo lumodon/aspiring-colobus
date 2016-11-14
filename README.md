@@ -1,4 +1,4 @@
-# aspiring-colobus
+# electron-clicker
 
 ## Description
 
