@@ -22,15 +22,18 @@ const incUpgrade = (upgrade) => {
 }
 
 const upgrade1 = new Upgrade( 5, () => {
-  console.log(this, this.cost)
-  this.cost += 5
-  dom_upgradeCost_1.innerHTML = this.cost
+  console.log(upgrade1, upgrade1.cost)
+  upgrade1.cost += 5
+  dom_upgradeCost_1.innerHTML = upgrade1.cost
+  counter.innerHTML
   countBy++
 })
 
 // Initialization
 if (typeof(Storage) !== "undefined") {
+    //console.log(counter)
     $("<p id='counter'>0</p>").insertAfter("#cookie")
+    console.log(counter)
 
     dom_errorMessage.innerHTML = ""
     dom_upgradeCost_1.innerHTML = upgrade1.cost
