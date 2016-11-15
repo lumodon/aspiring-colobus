@@ -2,6 +2,9 @@ let count = 0
 let countBy = 1
 let dom_errorMessage = document.getElementById("errorMessage")
 let dom_upgradeCost_1 = document.getElementById("upgradeCost_1")
+let dom_counter = document.getElementById("counter")
+
+console.log( dom_counter )
 
 class Upgrade {
   constructor(cost, func) {
@@ -10,41 +13,35 @@ class Upgrade {
   }
 }
 
-const incUpgrade = (upgrade) => {
+const increaseUpgrade = (upgrade) => {
   if(count >= upgrade.cost) {
     count -= upgrade.cost
+    dom_counter.innerHTML = count
     upgrade.me()
   }
   else {
-    console.log("I'm running for some reason")
     dom_errorMessage.innerHTML = "Not enough electrons! Need "+(upgrade.cost-count)+" more electrons!"
   }
 }
 
 const upgrade1 = new Upgrade( 5, () => {
-  console.log(upgrade1, upgrade1.cost)
   upgrade1.cost += 5
   dom_upgradeCost_1.innerHTML = upgrade1.cost
-  counter.innerHTML
   countBy++
 })
 
 // Initialization
 if (typeof(Storage) !== "undefined") {
-    //console.log(counter)
-    $("<p id='counter'>0</p>").insertAfter("#cookie")
-    console.log(counter)
-
     dom_errorMessage.innerHTML = ""
     dom_upgradeCost_1.innerHTML = upgrade1.cost
 
     $("#cookie").click( () => {
       count += countBy
-      counter.innerHTML = count
+      dom_counter.innerHTML = count
     })
 
     $("#upgrade_1").click( () => {
-      incUpgrade(upgrade1)
+      increaseUpgrade(upgrade1)
     })
 
 } else {
