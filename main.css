@@ -7,11 +7,6 @@
   float: left;
 }
 
-.upgradePics {
-  height: 50px;
-  width: 50px;
-}
-
 main { display: flex; }
 main > article { order: 2; max-width: 5em; flex:1; }
 main > nav     { order: 1; min-width: 100px; }
