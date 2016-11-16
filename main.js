@@ -7,19 +7,23 @@ let dom_counter = document.getElementById("counter")
 // two point seven, year $20 president got elected (Andrew Jackson), 45 degree triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27 digits of euler's number
 const E = 2.71828182845904523536028747
 
-class Cost = {
+class Cost {
   constructor (cost) {
-    this.cost = cost
+    this._cost = cost
     this.deltaCost = cost
   }
 
   increase() {
-    this.deltaCost += this.cost * 0.1
-    this.cost += this.deltaCost
+    this.deltaCost += Math.floor(this._cost * 0.1)
+    this._cost += this.deltaCost
   }
 
   get cost() {
-    return this.cost
+    return this._cost
+  }
+
+  set cost(setVal) {
+    this._cost = setVal
   }
 }
 
@@ -35,15 +39,23 @@ console.log( dom_counter )
 
 class Upgrade {
   constructor(cost, img, func) {
-    this.cost = new Cost(cost)
+    this._cost = new Cost(cost)
     this.img = img
     this.me = func
   }
 
   handleCost() {
-    count -= this.cost
+    count -= this._cost.cost
     dom_counter.innerHTML = count
-    this.cost.increase()
+    this._cost.increase()
+  }
+
+  get cost() {
+    return this._cost.cost
+  }
+
+  set cost(newVal) {
+    this._cost.cost = newVal
   }
 }
 
