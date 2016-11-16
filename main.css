@@ -8,6 +8,6 @@
 }
 
 main { display: flex; }
-main > article { order: 2; min-width: 12em; flex:1; }
+main > article { order: 2; max-width: 5em; flex:1; }
 main > nav     { order: 1; min-width: 100px; }
 main > aside   { order: 3; min-width: 100px; }
