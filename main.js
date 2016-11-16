@@ -35,8 +35,6 @@ let cycle = (prev, count) => {
   }
 }
 
-console.log( dom_counter )
-
 class Upgrade {
   constructor(cost, img, func) {
     this._cost = new Cost(cost)
@@ -78,7 +76,8 @@ const upgradeWire = new Upgrade( 5, './wire.jpg', () => {
 // Initialization
 if (typeof(Storage) !== "undefined") {
     dom_errorMessage.innerHTML = ""
-    dom_upgradeCost_1.innerHTML = upgradeWire.cost
+    dom_upgradeCost_1.innerHTML = upgrade1.cost
+    dom_counter.innerHTML = count
 
     $("#cookie").click( () => {
       count += countBy
