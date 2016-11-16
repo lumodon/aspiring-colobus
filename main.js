@@ -1,7 +1,7 @@
 let count = 0
 let countBy = 1
 let dom_errorMessage = document.getElementById("errorMessage")
-//let dom_upgradeCost_1 = document.getElementById("upgradeCost_1")
+let upgradeList = []
 let dom_counter = document.getElementById("counter")
 
 // two point seven, year $20 president got elected (Andrew Jackson), 45 degree triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27 digits of euler's number
@@ -33,32 +33,33 @@ class Upgrade {
   constructor(upgName, img, cost, func) {
     this.upgName = upgName
     this.img = img
-    this._cost = new Cost(cost)
+    this.price = new Cost(cost)
     this.me = func
     this.$dom_img = $("<img src="+this.img+">")
     this.$dom_cost = $('<p id="upgrade'+this.upgName+'"></p>')
 
+    upgradeList.push(this)
     let $tempDiv = $("<div></div>").appendTo("#upgrades")
     this.$dom_img.click( () => {
       increaseUpgrade(this)
     }).appendTo($tempDiv)
     this.$dom_cost.appendTo($tempDiv)
-    this.$dom_cost.html(this._cost.cost)
+    this.$dom_cost.html(this.price.cost)
   }
 
   handleCost() {
-    count -= this._cost.cost
+    count -= this.price.cost
     dom_counter.innerHTML = count
-    this._cost.increase()
-    this.$dom_cost.html(this._cost.cost)
+    this.price.increase()
+    this.$dom_cost.html(this.price.cost)
   }
 
   get cost() {
-    return this._cost.cost
+    return this.price.cost
   }
 
   set cost(newVal) {
-    this._cost.cost = newVal
+    this.price.cost = newVal
   }
 }
 
@@ -80,9 +81,20 @@ const upgradeWire = new Upgrade( 'Wire', './wire.jpg', 5,
 
 const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 500,
   () => {
-    window.setTimer()
+    timer.addPoint(upgradeNuclear.upgName)
   }
 )
+
+let timer = {
+  upgradePoints: () => {
+    upgradeList.forEach( (index) => {
+      this[index] = 0
+    })
+  },
+  addPoint: (upgradeName) => {
+    upgradePoints[upgradeName]++
+  },
+}
 
 // Initialization
 if (typeof(Storage) !== "undefined") {
