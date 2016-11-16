@@ -4,19 +4,62 @@ let dom_errorMessage = document.getElementById("errorMessage")
 let dom_upgradeCost_1 = document.getElementById("upgradeCost_1")
 let dom_counter = document.getElementById("counter")
 
-//console.log( dom_counter )
+// two point seven, year $20 president got elected (Andrew Jackson), 45 degree triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27 digits of euler's number
+const E = 2.71828182845904523536028747
+
+class Cost {
+  constructor (cost) {
+    this._cost = cost
+    this.deltaCost = cost
+  }
+
+  increase() {
+    this.deltaCost += Math.floor(this._cost * 0.1)
+    this._cost += this.deltaCost
+  }
+
+  get cost() {
+    return this._cost
+  }
+
+  set cost(setVal) {
+    this._cost = setVal
+  }
+}
+
+let cycle = (prev, count) => {
+  if(count > 0) {
+    let newVal = COST_DELTA(prev)
+    cycle(newVal, --count )
+    console.log(newVal)
+  }
+}
 
 class Upgrade {
-  constructor(cost, func) {
-    this.cost = cost
+  constructor(cost, img, func) {
+    this._cost = new Cost(cost)
+    this.img = img
     this.me = func
+  }
+
+  handleCost() {
+    count -= this._cost.cost
+    dom_counter.innerHTML = count
+    this._cost.increase()
+  }
+
+  get cost() {
+    return this._cost.cost
+  }
+
+  set cost(newVal) {
+    this._cost.cost = newVal
   }
 }
 
 const increaseUpgrade = (upgrade) => {
   if(count >= upgrade.cost) {
-    count -= upgrade.cost
-    dom_counter.innerHTML = count
+    upgrade.handleCost()
     upgrade.me()
   }
   else {
@@ -24,9 +67,9 @@ const increaseUpgrade = (upgrade) => {
   }
 }
 
-const upgrade1 = new Upgrade( 5, () => {
-  upgrade1.cost += 5
-  dom_upgradeCost_1.innerHTML = upgrade1.cost
+const upgradeWire = new Upgrade( 5, './wire.jpg', () => {
+  upgradeWire.cost += 5
+  dom_upgradeCost_1.innerHTML = upgradeWire.cost
   countBy++
 })
 
@@ -42,7 +85,7 @@ if (typeof(Storage) !== "undefined") {
     })
 
     $("#upgrade_1").click( () => {
-      increaseUpgrade(upgrade1)
+      increaseUpgrade(upgradeWire)
     })
 
 } else {
