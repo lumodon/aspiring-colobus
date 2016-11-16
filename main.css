@@ -1,0 +1,13 @@
+.game-window {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.float-section {
+  float: left;
+}
+
+main { display: flex; }
+main > article { order: 2; min-width: 12em; flex:1; }
+main > nav     { order: 1; min-width: 100px; }
+main > aside   { order: 3; min-width: 100px; }

@@ -5,17 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Test</title>
+  <link rel="stylesheet" type="text/css" href="./main.css">
 </head>
 <body>
-  <img src="./atom.png" alt="Neils Bohr Atom" id="cookie">
-  <p id='counter'>0</p>
-  <img src="./wire.jpg" alt="Colored Wires" id="upgrade_1">
-  <p id="upgradeCost_1"></p>
-  <p id="errorMessage">Loaded</p>
-  <input type="text" id="capt">
-  <button action="setCookieSample()"></button>
-  <br>
-  <p id="result"></p>
+  <main>
+    <nav>
+      <img src="./atom.png" alt="Neils Bohr Atom" id="cookie">
+    </nav>
+
+    <aside>
+      <section id="counter">
+        <p id='counter'></p>
+      </section>
+
+      <section id="upgrades">
+        <img src="./wire.jpg" alt="Colored Wires" id="upgrade_1">
+        <p id="upgradeCost_1"></p>
+        <p id="errorMessage"></p>
+      </section>
+    </aside>
+  </main>
+  <footer><p id="result">Get This</p></footer>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="main.js"></script>
 </body>
