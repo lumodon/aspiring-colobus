@@ -3,8 +3,11 @@ let countBy = 1
 let dom_errorMessage = document.getElementById("errorMessage")
 let dom_upgradeCost_1 = document.getElementById("upgradeCost_1")
 let dom_counter = document.getElementById("counter")
+let upgradeStack = []
 
 // two point seven, year $20 president got elected (Andrew Jackson), 45 degree triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27 digits of euler's number
+
+//1828 the presidents got into a debate, the decade that started with two because depression was true
 const E = 2.71828182845904523536028747
 
 class Cost {
@@ -36,10 +39,21 @@ let cycle = (prev, count) => {
 }
 
 class Upgrade {
-  constructor(cost, img, func) {
+  static renderUpgrades() {
+    upgradeStack.forEach( (index) => {
+      // TODO: Working on appending to some div
+      //$("<img src="+index.img+">").append()
+    })
+  }
+
+  constructor(cost, img, func, lastOne) {
     this._cost = new Cost(cost)
     this.img = img
     this.me = func
+    upgradeStack.push(this)
+    if(lastOne === true) {
+      renderUpgrades()
+    }
   }
 
   handleCost() {
@@ -67,8 +81,11 @@ const increaseUpgrade = (upgrade) => {
   }
 }
 
+const upgradeNuclear = new Upgrade( 5, './nuclear.png', () => {
+  window.setTimer()
+})
+
 const upgradeWire = new Upgrade( 5, './wire.jpg', () => {
-  upgradeWire.cost += 5
   dom_upgradeCost_1.innerHTML = upgradeWire.cost
   countBy++
 })
