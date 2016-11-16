@@ -76,7 +76,7 @@ const upgradeWire = new Upgrade( 5, './wire.jpg', () => {
 // Initialization
 if (typeof(Storage) !== "undefined") {
     dom_errorMessage.innerHTML = ""
-    dom_upgradeCost_1.innerHTML = upgrade1.cost
+    dom_upgradeCost_1.innerHTML = upgradeWire.cost
     dom_counter.innerHTML = count
 
     $("#cookie").click( () => {
