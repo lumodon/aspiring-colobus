@@ -1,9 +1,8 @@
 let count = 0
 let countBy = 1
 let dom_errorMessage = document.getElementById("errorMessage")
-let dom_upgradeCost_1 = document.getElementById("upgradeCost_1")
+//let dom_upgradeCost_1 = document.getElementById("upgradeCost_1")
 let dom_counter = document.getElementById("counter")
-let upgradeStack = []
 
 // two point seven, year $20 president got elected (Andrew Jackson), 45 degree triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27 digits of euler's number
 
@@ -30,36 +29,26 @@ class Cost {
   }
 }
 
-let cycle = (prev, count) => {
-  if(count > 0) {
-    let newVal = COST_DELTA(prev)
-    cycle(newVal, --count )
-    console.log(newVal)
-  }
-}
-
 class Upgrade {
-  static renderUpgrades() {
-    upgradeStack.forEach( (index) => {
-      // TODO: Working on appending to some div
-      //$("<img src="+index.img+">").append()
-    })
-  }
-
-  constructor(cost, img, func, lastOne) {
-    this._cost = new Cost(cost)
+  constructor(upgName, img, cost, func) {
+    this.upgName = upgName
     this.img = img
+    this._cost = new Cost(cost)
     this.me = func
-    upgradeStack.push(this)
-    if(lastOne === true) {
-      renderUpgrades()
-    }
+    this.$dom_img = $("<img src="+this.img+">")
+    this.$dom_cost = $('<p id="upgrade'+this.upgName+'"></p>')
+
+    this.$dom_img.click( () => {
+      increaseUpgrade(this)
+    }).appendTo("#upgrades")
+    this.$dom_cost.appendTo("#upgrades")
   }
 
   handleCost() {
     count -= this._cost.cost
     dom_counter.innerHTML = count
     this._cost.increase()
+    $dom_cost.innerHTML = this._cost.cost
   }
 
   get cost() {
@@ -81,19 +70,22 @@ const increaseUpgrade = (upgrade) => {
   }
 }
 
-const upgradeNuclear = new Upgrade( 5, './nuclear.png', () => {
-  window.setTimer()
-})
+const upgradeWire = new Upgrade( 'Wire', './wire.jpg', 5,
+  () => {
+    dom_upgradeCost_1.innerHTML = upgradeWire.cost
+    countBy++
+  }
+)
 
-const upgradeWire = new Upgrade( 5, './wire.jpg', () => {
-  dom_upgradeCost_1.innerHTML = upgradeWire.cost
-  countBy++
-})
+const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 500,
+  () => {
+    window.setTimer()
+  }
+)
 
 // Initialization
 if (typeof(Storage) !== "undefined") {
     dom_errorMessage.innerHTML = ""
-    dom_upgradeCost_1.innerHTML = upgradeWire.cost
     dom_counter.innerHTML = count
 
     $("#cookie").click( () => {
@@ -101,10 +93,6 @@ if (typeof(Storage) !== "undefined") {
       dom_counter.innerHTML = count
     })
 
-    $("#upgrade_1").click( () => {
-      increaseUpgrade(upgradeWire)
-    })
-
 } else {
-    document.getElementById("result").innerHTML="Sorry! No Web Storage support.."
+    dom_errorMessage.innerHTML="Sorry! No Web Storage support.."
 }
