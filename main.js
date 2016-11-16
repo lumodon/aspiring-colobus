@@ -38,17 +38,18 @@ class Upgrade {
     this.$dom_img = $("<img src="+this.img+">")
     this.$dom_cost = $('<p id="upgrade'+this.upgName+'"></p>')
 
+    let $tempDiv = $("<div></div>").appendTo("#upgrades")
     this.$dom_img.click( () => {
       increaseUpgrade(this)
-    }).appendTo("#upgrades")
-    this.$dom_cost.appendTo("#upgrades")
+    }).appendTo($tempDiv)
+    this.$dom_cost.appendTo($tempDiv)
   }
 
   handleCost() {
     count -= this._cost.cost
     dom_counter.innerHTML = count
     this._cost.increase()
-    $dom_cost.innerHTML = this._cost.cost
+    this.$dom_cost.innerHTML = this._cost.cost
   }
 
   get cost() {
@@ -72,7 +73,6 @@ const increaseUpgrade = (upgrade) => {
 
 const upgradeWire = new Upgrade( 'Wire', './wire.jpg', 5,
   () => {
-    dom_upgradeCost_1.innerHTML = upgradeWire.cost
     countBy++
   }
 )
