@@ -43,13 +43,14 @@ class Upgrade {
       increaseUpgrade(this)
     }).appendTo($tempDiv)
     this.$dom_cost.appendTo($tempDiv)
+    this.$dom_cost.html(this._cost.cost)
   }
 
   handleCost() {
     count -= this._cost.cost
     dom_counter.innerHTML = count
     this._cost.increase()
-    this.$dom_cost.innerHTML = this._cost.cost
+    this.$dom_cost.html(this._cost.cost)
   }
 
   get cost() {
