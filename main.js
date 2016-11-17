@@ -35,10 +35,12 @@ class Upgrade {
     this.img = img
     this._cost = new Cost(cost)
     this.me = func
-    this.$dom_img = $("<img src="+this.img+">")
+    this.$dom_upgName = $('<p>'+this.upgName+'</p>')
+    this.$dom_img = $('<img class="upgradePics" src='+this.img+'>')
     this.$dom_cost = $('<p id="upgrade'+this.upgName+'"></p>')
 
-    let $tempDiv = $("<div></div>").appendTo("#upgrades")
+    let $tempDiv = $('<div></div>').appendTo('#upgrades')
+    this.$dom_upgName.appendTo($tempDiv)
     this.$dom_img.click( () => {
       increaseUpgrade(this)
     }).appendTo($tempDiv)
@@ -66,6 +68,7 @@ const increaseUpgrade = (upgrade) => {
   if(count >= upgrade.cost) {
     upgrade.handleCost()
     upgrade.me()
+    dom_errorMessage.innerHTML = ""
   }
   else {
     dom_errorMessage.innerHTML = "Not enough electrons! Need "+(upgrade.cost-count)+" more electrons!"
