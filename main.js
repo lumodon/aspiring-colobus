@@ -1,12 +1,15 @@
 let count = 0
 let countBy = 1
 let dom_errorMessage = document.getElementById("errorMessage")
-//let dom_upgradeCost_1 = document.getElementById("upgradeCost_1")
 let dom_counter = document.getElementById("counter")
+let dom_result = document.getElementById("result")
 
-// two point seven, year $20 president got elected (Andrew Jackson), 45 degree triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27 digits of euler's number
+// two point seven, year $20 president got elected (Andrew Jackson), 45 degree
+// triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27
+// digits of euler's number
 
-//1828 the presidents got into a debate, the decade that started with two because depression was true
+//1828 the presidents got into a debate, the decade that started with two
+// because depression was true
 const E = 2.71828182845904523536028747
 
 class Cost {
@@ -33,7 +36,7 @@ class Upgrade {
   constructor(upgName, img, cost, func) {
     this.upgName = upgName
     this.img = img
-    this._cost = new Cost(cost)
+    this.price = new Cost(cost)
     this.me = func
     this.$dom_upgName = $('<p>'+this.upgName+'</p>')
     this.$dom_img = $('<img class="upgradePics" src='+this.img+'>')
@@ -45,22 +48,22 @@ class Upgrade {
       increaseUpgrade(this)
     }).appendTo($tempDiv)
     this.$dom_cost.appendTo($tempDiv)
-    this.$dom_cost.html(this._cost.cost)
+    this.$dom_cost.html(this.price.cost)
   }
 
   handleCost() {
-    count -= this._cost.cost
+    count -= this.price.cost
     dom_counter.innerHTML = count
-    this._cost.increase()
-    this.$dom_cost.html(this._cost.cost)
+    this.price.increase()
+    this.$dom_cost.html(this.price.cost)
   }
 
   get cost() {
-    return this._cost.cost
+    return this.price.cost
   }
 
   set cost(newVal) {
-    this._cost.cost = newVal
+    this.price.cost = newVal
   }
 }
 
@@ -71,7 +74,66 @@ const increaseUpgrade = (upgrade) => {
     dom_errorMessage.innerHTML = ""
   }
   else {
-    dom_errorMessage.innerHTML = "Not enough electrons! Need "+(upgrade.cost-count)+" more electrons!"
+    dom_errorMessage.innerHTML = "Not enough electrons! Need "+
+    (upgrade.cost-count)+" more electrons!"
+  }
+}
+
+
+// Problem discovered:
+// https://derickbailey.com/2015/09/28/do-es6-arrow-functions-really-solve-this-in-javascript/
+
+let timer = {
+  // I would normally make upgradeList a class with += operator overload so that
+  // one could just do 'timer.upgradeList += this' to run the addTo function
+  upgradeList: {},
+  intervalTimer: undefined,
+  timerCount: 0,
+  countToAdd: 0,
+
+  // Public Methods
+  addPoint: (upgradeName) => {
+    timer.upgradeList[upgradeName].level++
+    timer.updateCountToAdd()
+    return timer
+  },
+  enableTimer: () => {
+    timer.intervalTimer = window.setInterval(timer.tick, 1000)
+    return timer
+  },
+  disableTimer: () => {
+    if(timer.intervalTimer !== undefined) {
+      window.clearInterval( timer.intervalTimer )
+      return timer
+    }
+  },
+  addTo: ({name, interval, value, level=0}) => {
+    timer.upgradeList[name] = {interval, value, level, timeRemaining: interval}
+    // timer.upgradeList[name].timeRemaining = interval
+    timer.updateCountToAdd()
+  },
+
+  // Private Methods
+  tick: () => {
+    timer.updateCountToAdd()
+    count += timer.countToAdd
+    dom_counter.innerHTML = count
+
+    dom_result.innerHTML = "Value: " + timer.timerCount++
+  },
+  updateCountToAdd: () => {
+    timer.countToAdd = 0
+    for( let iteratee in timer.upgradeList ) {
+      let upg = timer.upgradeList[iteratee]
+      // skip loop if the property is from prototype
+      if(!timer.upgradeList.hasOwnProperty(iteratee)) continue
+      if(upg.timeRemaining <= 1 && upg.level >= 1) {
+        upg.timeRemaining = upg.interval
+        timer.countToAdd += upg.level * upg.value
+      } else {
+        upg.timeRemaining--
+      }
+    }
   }
 }
 
@@ -81,11 +143,15 @@ const upgradeWire = new Upgrade( 'Wire', './wire.jpg', 5,
   }
 )
 
-const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 500,
+const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 50,
   () => {
-    window.setTimer()
+    timer.addPoint(upgradeNuclear.upgName)
   }
 )
+
+// This upgrade works on a timer. TODO: Organize to be self-implementing
+timer.addTo({name: upgradeNuclear.upgName, interval: 5, value: 10})
+
 const upgradeTower = new Upgrade( 'Power Tower', './powertower.jpg', 500,
   () => {
     window.setTimer()
@@ -121,6 +187,8 @@ if (typeof(Storage) !== "undefined") {
       count += countBy
       dom_counter.innerHTML = count
     })
+
+    timer.enableTimer()
 
 } else {
     dom_errorMessage.innerHTML="Sorry! No Web Storage support.."
