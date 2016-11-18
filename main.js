@@ -3,6 +3,7 @@ let countBy = 1
 let dom_errorMessage = document.getElementById("errorMessage")
 let dom_counter = document.getElementById("counter")
 let dom_result = document.getElementById("result")
+let listOfUpgrades = []
 
 // two point seven, year $20 president got elected (Andrew Jackson), 45 degree
 // triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27
@@ -13,13 +14,14 @@ let dom_result = document.getElementById("result")
 const E = 2.71828182845904523536028747
 
 class Cost {
-  constructor (cost) {
+  constructor (cost, percenteage=10) {
     this._cost = cost
     this.deltaCost = cost
+    this.percentage = percentage
   }
 
   increase() {
-    this.deltaCost += Math.floor(this._cost * 0.1)
+    this.deltaCost += Math.floor(this._cost * (this.percentage / 100))
     this._cost += this.deltaCost
   }
 
@@ -45,7 +47,6 @@ class Upgrade {
     this.dom_timeCount.style.marginTop = "0px"
     this.dom_timeCount.style.marginBottom = "10px"
 
-
     let $tempDiv = $('<div class="upgrade-item"></div>').appendTo('#upgrades')
     this.$dom_upgName.appendTo($tempDiv)
     this.$dom_img.click( () => {
@@ -55,6 +56,7 @@ class Upgrade {
     $tempDiv[0].appendChild( this.dom_timeCount )
     $tempDiv[0].style.height = ($tempDiv[0].offsetHeight + 31) + "px"
 
+    listOfUpgrades.push(this)
   }
 
   handleCost() {
@@ -151,39 +153,53 @@ const upgradeWire = new Upgrade( 'Wire', './wire.jpg', 5,
   }
 )
 
-const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 50,
+// Gives you electrons every 5 seconds
+const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 2000,
   () => {
     timer.addPoint(upgradeNuclear.upgName)
   }
 )
 
 // This upgrade works on a timer. TODO: Organize to be self-implementing
-timer.addTo({name: upgradeNuclear.upgName, interval: 5, value: 10,
+timer.addTo({name: upgradeNuclear.upgName, interval: 20, value: 250,
   dom_timeCount: upgradeNuclear.dom_timeCount})
 
+// Increases the speed other timer-based upgrades give you electrons
 const upgradeTower = new Upgrade( 'Power Tower', './powertower.jpg', 500,
   () => {
-    window.setTimer()
+
   }
 )
-const upgradeGenerator = new Upgrade( 'Generator', './generator.jpg', 500,
+
+// faster than nuclear but less electrons
+const upgradeGenerator = new Upgrade( 'Generator', './generator.jpg', 2000,
   () => {
-    window.setTimer()
+    timer.addPoint(upgradeGenerator.upgName)
   }
 )
-const upgradeWindMill = new Upgrade( 'Wind Mill', './windmill.png', 500,
+timer.addTo({name: upgradeGenerator.upgName, interval: 10, value: 75,
+  dom_timeCount: upgradeGenerator.dom_timeCount})
+
+// cheaper copy of generator
+const upgradeWindMill = new Upgrade( 'Wind Mill', './windmill.png', 150,
   () => {
-    window.setTimer()
+    timer.addPoint(upgradeWindMill.upgName)
   }
 )
-const upgradeTransformer = new Upgrade( 'Transformer', './transformer.jpg', 500,
+timer.addTo({name: upgradeWindMill.upgName, interval: 15, value: 10,
+  dom_timeCount: upgradeWindMill.dom_timeCount})
+
+// Decreases cost of all other upgrades
+const upgradeTransformer = new Upgrade( 'Transformer', './transformer.jpg', 250,
   () => {
-    window.setTimer()
+
   }
 )
+
+// decreases rate at which costs increase (not retroactive on purpose)
 const upgradeSolarPanel = new Upgrade( 'Solar Panel', './solarpanel.jpg', 500,
   () => {
-    window.setTimer()
+
   }
 )
 
