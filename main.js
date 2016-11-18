@@ -84,15 +84,15 @@ const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 50,
   }
 )
 // This upgrade works on a timer. TODO: Organize to be self-implementing
-timer.upgradePoints.push(upgradeNuclear.upgName)
+timer.upgradeList.push({name: upgradeNuclear.upgName, interval: 30, value: 1})
 
 let timer = {
-  upgradePoints: [],
+  upgradeList: [],
   intervalTimer: undefined,
   timerCount: 0,
   // Public Methods
   addPoint: (upgradeName) => {
-    timer.upgradePoints[upgradeName]++
+    timer.upgradeList[upgradeName]++
     return timer
   },
   enableTimer: () => {
@@ -107,13 +107,9 @@ let timer = {
   },
 
   // Private Methods
-  Initialization: () => {
-    upgradeList.forEach( (index) => {
-      timer.upgradePoints[index.upgName] = 0
-    })
-  },
   tick: () => {
-
+    upgradeList.forEach()
+    count += countToAdd
     dom_result.innerHTML = "Value: " + timer.timerCount++
   },
 
@@ -125,8 +121,6 @@ let timer = {
 if (typeof(Storage) !== "undefined") {
     dom_errorMessage.innerHTML = ""
     dom_counter.innerHTML = count
-
-    timer.Initialization()
 
     $("#cookie").click( () => {
       count += countBy
