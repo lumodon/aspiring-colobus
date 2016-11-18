@@ -75,6 +75,13 @@ class Upgrade {
   }
 }
 
+let engineerNotation = (value) => {
+  let result = undefined
+  if(value.isNaN()) return NaN
+  else if(value > 1000 && value < 1000000)
+  return result
+}
+
 const increaseUpgrade = (upgrade) => {
   if(count >= upgrade.cost) {
     upgrade.handleCost()
@@ -205,7 +212,9 @@ timer.addTo({name: upgradeWindMill.upgName, interval: 15, value: 10,
 // Decreases cost of all other upgrades
 const upgradeTransformer = new Upgrade( 'Transformer', './transformer.jpg', 250,
   () => {
+    listOfUpgrades.forEach( (iteratee) => {
 
+    })
   }
 )
 
