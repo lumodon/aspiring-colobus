@@ -1,3 +1,7 @@
+*{
+box-sizing: border-box;
+}
+
 .game-window {
   display: flex;
   flex-wrap: wrap;
@@ -10,18 +14,36 @@
 .upgradePics {
   height: 50px;
   width: 50px;
+  justify-content: center;
 }
 
 main {
   display: flex;
-  /*flex-flow: row;*/
+  flex-flow: row;
   justify-content: center;
 }
-main { display: flex; }
-main > article { order: 2; max-width: 5em; flex:1; }
-main > nav     { order: 1; min-width: 100px; }
-main > aside   { order: 3; min-width: 150px; }
 
+main > article {
+  order: 2;
+  max-width: 5em;
+  flex:1;
+}
+
+main > nav {
+  order: 1;
+  min-width: 100px;
+}
+
+main > aside {
+  order: 3;
+  min-width: 150px;
+  max-width: 526px;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+}
 /*section div {
   min-width: auto;
   min-height: auto;
@@ -38,4 +60,17 @@ main > aside   { order: 3; min-width: 150px; }
   flex-wrap: wrap;
   border-style: solid;
   border-color: black;
+}
+
+#upgrade-item {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  height: 150px;
+  width: 20%;
+  min-width: 100px;
+  margin: 1px;
+  border-color: inherit;
+  border-style: solid;
+  border-width: 2px;
 }

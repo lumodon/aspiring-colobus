@@ -39,7 +39,7 @@ class Upgrade {
     this.$dom_img = $('<img class="upgradePics" src='+this.img+'>')
     this.$dom_cost = $('<p id="upgrade'+this.upgName+'"></p>')
 
-    let $tempDiv = $('<div></div>').appendTo('#upgrades')
+    let $tempDiv = $('<div id="upgrade-item"></div>').appendTo('#upgrades')
     this.$dom_upgName.appendTo($tempDiv)
     this.$dom_img.click( () => {
       increaseUpgrade(this)
@@ -82,6 +82,31 @@ const upgradeWire = new Upgrade( 'Wire', './wire.jpg', 5,
 )
 
 const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 500,
+  () => {
+    window.setTimer()
+  }
+)
+const upgradeTower = new Upgrade( 'Power Tower', './powertower.jpg', 500,
+  () => {
+    window.setTimer()
+  }
+)
+const upgradeGenerator = new Upgrade( 'Generator', './generator.jpg', 500,
+  () => {
+    window.setTimer()
+  }
+)
+const upgradeWindMill = new Upgrade( 'Wind Mill', './windmill.png', 500,
+  () => {
+    window.setTimer()
+  }
+)
+const upgradeTransformer = new Upgrade( 'Transformer', './transformer.jpg', 500,
+  () => {
+    window.setTimer()
+  }
+)
+const upgradeSolarPanel = new Upgrade( 'Solar Panel', './solarpanel.jpg', 500,
   () => {
     window.setTimer()
   }
