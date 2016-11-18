@@ -42,6 +42,9 @@ class Upgrade {
     this.$dom_img = $('<img class="upgradePics" src='+this.img+'>')
     this.$dom_cost = $('<p id="upgrade'+this.upgName+'Cost"></p>')
     this.dom_timeCount = document.createElement("p", "id=upgrade"+this.upgName+"Time")
+    this.dom_timeCount.style.marginTop = "0px"
+    this.dom_timeCount.style.marginBottom = "10px"
+
 
     let $tempDiv = $('<div class="upgrade-item"></div>').appendTo('#upgrades')
     this.$dom_upgName.appendTo($tempDiv)
