@@ -34,21 +34,27 @@ class Cost {
 
 class Upgrade {
   constructor(upgName, img, cost, func) {
-    this.upgName = upgName
+    this.upgName = upgName.replace(/\s/g, ''); // Removes spaces
     this.img = img
     this.price = new Cost(cost)
     this.me = func
     this.$dom_upgName = $('<p>'+this.upgName+'</p>')
     this.$dom_img = $('<img class="upgradePics" src='+this.img+'>')
     this.$dom_cost = $('<p id="upgrade'+this.upgName+'Cost"></p>')
+    this.dom_timeCount = document.createElement("p", "id=upgrade"+this.upgName+"Time")
+    this.dom_timeCount.style.marginTop = "0px"
+    this.dom_timeCount.style.marginBottom = "10px"
+
 
     let $tempDiv = $('<div class="upgrade-item"></div>').appendTo('#upgrades')
     this.$dom_upgName.appendTo($tempDiv)
     this.$dom_img.click( () => {
       increaseUpgrade(this)
     }).appendTo($tempDiv)
-    this.$dom_cost.appendTo($tempDiv)
-    this.$dom_cost.html(this.price.cost)
+    this.$dom_cost.appendTo($tempDiv).html(this.price.cost)
+    $tempDiv[0].appendChild( this.dom_timeCount )
+    $tempDiv[0].style.height = ($tempDiv[0].offsetHeight + 31) + "px"
+
   }
 
   handleCost() {
@@ -107,8 +113,8 @@ let timer = {
       return timer
     }
   },
-  addTo: ({name, interval, value, level=0}) => {
-    timer.upgradeList[name] = {interval, value, level, timeRemaining: interval}
+  addTo: ({name, interval, value, level=0, dom_timeCount}) => {
+    timer.upgradeList[name] = {interval, value, level, timeRemaining: interval, dom_timeCount}
     // timer.upgradeList[name].timeRemaining = interval
     timer.updateCountToAdd()
   },
@@ -125,14 +131,16 @@ let timer = {
     timer.countToAdd = 0
     for( let iteratee in timer.upgradeList ) {
       let upg = timer.upgradeList[iteratee]
-      // skip loop if the property is from prototype
-      if(!timer.upgradeList.hasOwnProperty(iteratee)) continue
-      if(upg.timeRemaining <= 1 && upg.level >= 1) {
+      // skip loop if the property is from prototype or upgrade not upgraded yet
+      if(!timer.upgradeList.hasOwnProperty(iteratee) || upg.level < 1) continue
+
+      if(upg.timeRemaining <= 1) {
         upg.timeRemaining = upg.interval
         timer.countToAdd += upg.level * upg.value
       } else {
         upg.timeRemaining--
       }
+      upg.dom_timeCount.innerHTML = upg.timeRemaining
     }
   }
 }
@@ -150,7 +158,8 @@ const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 50,
 )
 
 // This upgrade works on a timer. TODO: Organize to be self-implementing
-timer.addTo({name: upgradeNuclear.upgName, interval: 5, value: 10})
+timer.addTo({name: upgradeNuclear.upgName, interval: 5, value: 10,
+  dom_timeCount: upgradeNuclear.dom_timeCount})
 
 const upgradeTower = new Upgrade( 'Power Tower', './powertower.jpg', 500,
   () => {
