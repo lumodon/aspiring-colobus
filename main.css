@@ -62,7 +62,7 @@ footer {
   border-color: black;
 }
 
-#upgrade-item {
+.upgrade-item {
   display: flex;
   flex-flow: column;
   align-items: center;
