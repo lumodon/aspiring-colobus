@@ -38,10 +38,12 @@ class Upgrade {
     this.img = img
     this.price = new Cost(cost)
     this.me = func
-    this.$dom_img = $("<img src="+this.img+">")
+    this.$dom_upgName = $('<p>'+this.upgName+'</p>')
+    this.$dom_img = $('<img class="upgradePics" src='+this.img+'>')
     this.$dom_cost = $('<p id="upgrade'+this.upgName+'"></p>')
 
-    let $tempDiv = $("<div></div>").appendTo("#upgrades")
+    let $tempDiv = $('<div id="upgrade-item"></div>').appendTo('#upgrades')
+    this.$dom_upgName.appendTo($tempDiv)
     this.$dom_img.click( () => {
       increaseUpgrade(this)
     }).appendTo($tempDiv)
@@ -69,6 +71,7 @@ const increaseUpgrade = (upgrade) => {
   if(count >= upgrade.cost) {
     upgrade.handleCost()
     upgrade.me()
+    dom_errorMessage.innerHTML = ""
   }
   else {
     dom_errorMessage.innerHTML = "Not enough electrons! Need "+
@@ -145,8 +148,35 @@ const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 50,
     timer.addPoint(upgradeNuclear.upgName)
   }
 )
+
 // This upgrade works on a timer. TODO: Organize to be self-implementing
 timer.addTo({name: upgradeNuclear.upgName, interval: 5, value: 10})
+
+const upgradeTower = new Upgrade( 'Power Tower', './powertower.jpg', 500,
+  () => {
+    window.setTimer()
+  }
+)
+const upgradeGenerator = new Upgrade( 'Generator', './generator.jpg', 500,
+  () => {
+    window.setTimer()
+  }
+)
+const upgradeWindMill = new Upgrade( 'Wind Mill', './windmill.png', 500,
+  () => {
+    window.setTimer()
+  }
+)
+const upgradeTransformer = new Upgrade( 'Transformer', './transformer.jpg', 500,
+  () => {
+    window.setTimer()
+  }
+)
+const upgradeSolarPanel = new Upgrade( 'Solar Panel', './solarpanel.jpg', 500,
+  () => {
+    window.setTimer()
+  }
+)
 
 // Initialization
 if (typeof(Storage) !== "undefined") {

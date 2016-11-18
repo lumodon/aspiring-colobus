@@ -1,3 +1,7 @@
+*{
+box-sizing: border-box;
+}
+
 .game-window {
   display: flex;
   flex-wrap: wrap;
@@ -7,22 +11,66 @@
   float: left;
 }
 
-main { display: flex; }
-main > article { order: 2; max-width: 5em; flex:1; }
-main > nav     { order: 1; min-width: 100px; }
-main > aside   { order: 3; min-width: 100px; }
+.upgradePics {
+  height: 50px;
+  width: 50px;
+  justify-content: center;
+}
 
-section div {
+main {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+
+main > article {
+  order: 2;
+  max-width: 5em;
+  flex:1;
+}
+
+main > nav {
+  order: 1;
+  min-width: 100px;
+}
+
+main > aside {
+  order: 3;
+  min-width: 150px;
+  max-width: 526px;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+}
+/*section div {
   min-width: auto;
   min-height: auto;
-}
+}*/
 
-section div p {
-  width: 100px;
+/*section div p {
+  width: 50 ;
   height: 50px;
+}*/
+
+#upgrades {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-style: solid;
+  border-color: black;
 }
 
-section img {
-  width: 100px;
-  height: 100px;
+#upgrade-item {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  height: 150px;
+  width: 20%;
+  min-width: 100px;
+  margin: 1px;
+  border-color: inherit;
+  border-style: solid;
+  border-width: 2px;
 }
