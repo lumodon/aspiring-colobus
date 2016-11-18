@@ -5,6 +5,9 @@ let dom_counter = document.getElementById("counter")
 let dom_result = document.getElementById("result")
 let listOfUpgrades = []
 
+let ecData = localStorage
+let gameData = {}
+
 // two point seven, year $20 president got elected (Andrew Jackson), 45 degree
 // triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27
 // digits of euler's number
@@ -225,8 +228,20 @@ const upgradeSolarPanel = new Upgrade( 'Solar Panel', './solarpanel.jpg', 500,
   }
 )
 
+const saveGame = () => {
+  gameData.points = count
+  ecData.setItem("electron-clicker-data", JSON.stringify(gameData))
+}
+const loadGame = () => {
+  gameData = JSON.parse(ecData.getItem("electron-clicker-data"))
+  count = gameData.points
+}
+$('#savegame').click(saveGame)
+$('#loadgame').click(loadGame)
+
 // Initialization
 if (typeof(Storage) !== "undefined") {
+
     dom_errorMessage.innerHTML = ""
     dom_counter.innerHTML = count
 
@@ -236,7 +251,6 @@ if (typeof(Storage) !== "undefined") {
     })
 
     timer.enableTimer()
-
 } else {
     dom_errorMessage.innerHTML="Sorry! No Web Storage support.."
 }
