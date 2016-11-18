@@ -105,7 +105,8 @@ let timer = {
     }
   },
   addTo: ({name, interval, value, level=0}) => {
-    timer.upgradeList[name] = {interval, value, level}
+    timer.upgradeList[name] = {interval, value, level, timeRemaining: interval}
+    // timer.upgradeList[name].timeRemaining = interval
     timer.updateCountToAdd()
   },
 
@@ -113,14 +114,17 @@ let timer = {
   tick: () => {
     timer.updateCountToAdd()
     count += timer.countToAdd
+    dom_counter.innerHTML = count
 
     dom_result.innerHTML = "Value: " + timer.timerCount++
   },
   updateCountToAdd: () => {
-    for( let upg in timer.upgradeList ) {
+    timer.countToAdd = 0
+    for( let iteratee in timer.upgradeList ) {
+      let upg = timer.upgradeList[iteratee]
       // skip loop if the property is from prototype
-      if(!timer.upgradeList.hasOwnProperty(upg)) continue
-      if(upg.timeRemaining <= 1) {
+      if(!timer.upgradeList.hasOwnProperty(iteratee)) continue
+      if(upg.timeRemaining <= 1 && upg.level >= 1) {
         upg.timeRemaining = upg.interval
         timer.countToAdd += upg.level * upg.value
       } else {
@@ -142,7 +146,7 @@ const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 50,
   }
 )
 // This upgrade works on a timer. TODO: Organize to be self-implementing
-timer.addTo({name: upgradeNuclear.upgName, interval: 5, value: 1})
+timer.addTo({name: upgradeNuclear.upgName, interval: 5, value: 10})
 
 // Initialization
 if (typeof(Storage) !== "undefined") {
