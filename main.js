@@ -14,7 +14,7 @@ let listOfUpgrades = []
 const E = 2.71828182845904523536028747
 
 class Cost {
-  constructor (cost, percenteage=10) {
+  constructor (cost, percentage=10) {
     this._cost = cost
     this.deltaCost = cost
     this.percentage = percentage
@@ -120,6 +120,16 @@ let timer = {
     // timer.upgradeList[name].timeRemaining = interval
     timer.updateCountToAdd()
   },
+  lowerInterval: () => {
+    for( let iteratee in timer.upgradeList ) {
+      let upg = timer.upgradeList[iteratee]
+      // skip loop if the property is from prototype or upgrade not upgraded yet
+      if(!timer.upgradeList.hasOwnProperty(iteratee) || upg.level < 1) continue
+
+      if(upg.interval > 5) upg.interval--
+      else if(upg.interval > 1 && upg.interval <= 5) upg.interval -= 0.2
+    }
+  },
 
   // Private Methods
   tick: () => {
@@ -137,7 +147,7 @@ let timer = {
       if(!timer.upgradeList.hasOwnProperty(iteratee) || upg.level < 1) continue
 
       if(upg.timeRemaining <= 1) {
-        upg.timeRemaining = upg.interval
+        upg.timeRemaining = Math.ceil(upg.interval)
         timer.countToAdd += upg.level * upg.value
       } else {
         upg.timeRemaining--
@@ -165,9 +175,12 @@ timer.addTo({name: upgradeNuclear.upgName, interval: 20, value: 250,
   dom_timeCount: upgradeNuclear.dom_timeCount})
 
 // Increases the speed other timer-based upgrades give you electrons
+// Set up the function to give diminishing returns, but still gives returns
+// also, only decreases the time on currently purchased upgrades.
+// Should we keep it this way, or switch it to decrease time on all upgrades?
 const upgradeTower = new Upgrade( 'Power Tower', './powertower.jpg', 500,
   () => {
-
+    timer.lowerInterval()
   }
 )
 
