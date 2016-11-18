@@ -40,9 +40,9 @@ class Upgrade {
     this.me = func
     this.$dom_upgName = $('<p>'+this.upgName+'</p>')
     this.$dom_img = $('<img class="upgradePics" src='+this.img+'>')
-    this.$dom_cost = $('<p id="upgrade'+this.upgName+'"></p>')
+    this.$dom_cost = $('<p id="upgrade'+this.upgName+'Cost"></p>')
 
-    let $tempDiv = $('<div id="upgrade-item"></div>').appendTo('#upgrades')
+    let $tempDiv = $('<div class="upgrade-item"></div>').appendTo('#upgrades')
     this.$dom_upgName.appendTo($tempDiv)
     this.$dom_img.click( () => {
       increaseUpgrade(this)
