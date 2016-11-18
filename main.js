@@ -86,9 +86,12 @@ let timer = {
   upgradeList: {},
   intervalTimer: undefined,
   timerCount: 0,
+  countToAdd: 0,
+
   // Public Methods
   addPoint: (upgradeName) => {
     timer.upgradeList[upgradeName].level++
+    timer.updateCountToAdd()
     return timer
   },
   enableTimer: () => {
@@ -101,22 +104,30 @@ let timer = {
       return timer
     }
   },
-  addTo: ({name, interval, value, level}) => {
+  addTo: ({name, interval, value, level=0}) => {
     timer.upgradeList[name] = {interval, value, level}
-  }
+    timer.updateCountToAdd()
+  },
 
   // Private Methods
   tick: () => {
-    let countToAdd = 0
-
-    timer.upgradeList.forEach( (iteratee) => {
-      countToAdd += iteratee.level * iteratee.value
-    })
-
-    count += countToAdd
+    timer.updateCountToAdd()
+    count += timer.countToAdd
 
     dom_result.innerHTML = "Value: " + timer.timerCount++
   },
+  updateCountToAdd: () => {
+    for( let upg in timer.upgradeList ) {
+      // skip loop if the property is from prototype
+      if(!timer.upgradeList.hasOwnProperty(upg)) continue
+      if(upg.timeRemaining <= 1) {
+        upg.timeRemaining = upg.interval
+        timer.countToAdd += upg.level * upg.value
+      } else {
+        upg.timeRemaining--
+      }
+    }
+  }
 }
 
 const upgradeWire = new Upgrade( 'Wire', './wire.jpg', 5,
@@ -131,7 +142,7 @@ const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 50,
   }
 )
 // This upgrade works on a timer. TODO: Organize to be self-implementing
-timer.addTo({name: upgradeNuclear.upgName, interval: 30, value: 1})
+timer.addTo({name: upgradeNuclear.upgName, interval: 5, value: 1})
 
 // Initialization
 if (typeof(Storage) !== "undefined") {
@@ -142,6 +153,8 @@ if (typeof(Storage) !== "undefined") {
       count += countBy
       dom_counter.innerHTML = count
     })
+
+    timer.enableTimer()
 
 } else {
     dom_errorMessage.innerHTML="Sorry! No Web Storage support.."
