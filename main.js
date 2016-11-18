@@ -4,9 +4,12 @@ let dom_errorMessage = document.getElementById("errorMessage")
 let dom_counter = document.getElementById("counter")
 let dom_result = document.getElementById("result")
 
-// two point seven, year $20 president got elected (Andrew Jackson), 45 degree triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27 digits of euler's number
+// two point seven, year $20 president got elected (Andrew Jackson), 45 degree
+// triangle, fibonaci, degrees in circle, to eat an airplane -> gets you 27
+// digits of euler's number
 
-//1828 the presidents got into a debate, the decade that started with two because depression was true
+//1828 the presidents got into a debate, the decade that started with two
+// because depression was true
 const E = 2.71828182845904523536028747
 
 class Cost {
@@ -68,8 +71,52 @@ const increaseUpgrade = (upgrade) => {
     upgrade.me()
   }
   else {
-    dom_errorMessage.innerHTML = "Not enough electrons! Need "+(upgrade.cost-count)+" more electrons!"
+    dom_errorMessage.innerHTML = "Not enough electrons! Need "+
+    (upgrade.cost-count)+" more electrons!"
   }
+}
+
+
+// Problem discovered:
+// https://derickbailey.com/2015/09/28/do-es6-arrow-functions-really-solve-this-in-javascript/
+
+let timer = {
+  // I would normally make upgradeList a class with += operator overload so that
+  // one could just do 'timer.upgradeList += this' to run the addTo function
+  upgradeList: {},
+  intervalTimer: undefined,
+  timerCount: 0,
+  // Public Methods
+  addPoint: (upgradeName) => {
+    timer.upgradeList[upgradeName].level++
+    return timer
+  },
+  enableTimer: () => {
+    timer.intervalTimer = window.setInterval(timer.tick, 1000)
+    return timer
+  },
+  disableTimer: () => {
+    if(timer.intervalTimer !== undefined) {
+      window.clearInterval( timer.intervalTimer )
+      return timer
+    }
+  },
+  addTo: ({name, interval, value, level}) => {
+    timer.upgradeList[name] = {interval, value, level}
+  }
+
+  // Private Methods
+  tick: () => {
+    let countToAdd = 0
+
+    timer.upgradeList.forEach( (iteratee) => {
+      countToAdd += iteratee.level * iteratee.value
+    })
+
+    count += countToAdd
+
+    dom_result.innerHTML = "Value: " + timer.timerCount++
+  },
 }
 
 const upgradeWire = new Upgrade( 'Wire', './wire.jpg', 5,
@@ -84,38 +131,7 @@ const upgradeNuclear = new Upgrade( 'Nuclear Plant', './nuclear.png', 50,
   }
 )
 // This upgrade works on a timer. TODO: Organize to be self-implementing
-timer.upgradeList.push({name: upgradeNuclear.upgName, interval: 30, value: 1})
-
-let timer = {
-  upgradeList: [],
-  intervalTimer: undefined,
-  timerCount: 0,
-  // Public Methods
-  addPoint: (upgradeName) => {
-    timer.upgradeList[upgradeName]++
-    return timer
-  },
-  enableTimer: () => {
-    timer.intervalTimer = window.setInterval(timer.tick, 1000)
-    return timer
-  },
-  disableTimer: () => {
-    if(timer.intervalTimer !== undefined) {
-      window.clearInterval( timer.intervalTimer )
-      return timer
-    }
-  },
-
-  // Private Methods
-  tick: () => {
-    upgradeList.forEach()
-    count += countToAdd
-    dom_result.innerHTML = "Value: " + timer.timerCount++
-  },
-
-}
-
-
+timer.addTo({name: upgradeNuclear.upgName, interval: 30, value: 1})
 
 // Initialization
 if (typeof(Storage) !== "undefined") {
